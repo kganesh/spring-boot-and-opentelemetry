@@ -6,6 +6,7 @@ import java.util.concurrent.Future;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.core.task.AsyncTaskExecutor;
 import org.springframework.stereotype.Component;
 
@@ -17,7 +18,7 @@ public class GreetingServiceClient {
 
     private final AsyncTaskExecutor asyncTaskExecutor;
 
-    GreetingServiceClient(GreetingServiceHttpClient httpClient, AsyncTaskExecutor asyncTaskExecutor) {
+    GreetingServiceClient(GreetingServiceHttpClient httpClient, @Qualifier("applicationTaskExecutor") AsyncTaskExecutor asyncTaskExecutor) {
         this.httpClient = httpClient;
         this.asyncTaskExecutor = asyncTaskExecutor;
     }
