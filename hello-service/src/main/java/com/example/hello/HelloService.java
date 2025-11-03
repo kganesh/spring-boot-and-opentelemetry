@@ -7,7 +7,6 @@ import java.util.concurrent.Future;
 import com.example.hello.greeting.GreetingServiceClient;
 import com.example.hello.user.User;
 import com.example.hello.user.UserServiceClient;
-import io.micrometer.observation.ObservationRegistry;
 import io.micrometer.observation.annotation.Observed;
 import io.micrometer.tracing.annotation.NewSpan;
 import io.micrometer.tracing.annotation.SpanTag;
@@ -28,13 +27,10 @@ class HelloService {
 
     private final HelloConfigurationProperties properties;
 
-    private final ObservationRegistry observationRegistry;
-
-    HelloService(GreetingServiceClient greetingServiceClient, UserServiceClient userServiceClient, HelloConfigurationProperties properties, ObservationRegistry observationRegistry) {
+    HelloService(GreetingServiceClient greetingServiceClient, UserServiceClient userServiceClient, HelloConfigurationProperties properties) {
         this.greetingServiceClient = greetingServiceClient;
         this.userServiceClient = userServiceClient;
         this.properties = properties;
-        this.observationRegistry = observationRegistry;
     }
 
     @Observed(name = "say-hello")
