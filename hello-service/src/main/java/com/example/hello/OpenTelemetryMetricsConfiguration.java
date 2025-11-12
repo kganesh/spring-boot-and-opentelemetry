@@ -11,8 +11,10 @@ import io.opentelemetry.sdk.metrics.export.PeriodicMetricReader;
 import io.opentelemetry.sdk.resources.Resource;
 
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.micrometer.metrics.autoconfigure.export.otlp.OtlpMetricsConnectionDetails;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.util.Assert;
 
 /**
  * This configuration is needed so that OpenTelemetry API instrumented components can publish metrics.
@@ -32,7 +34,9 @@ class OpenTelemetryMetricsConfiguration {
     }
 
     @Bean
-    OtlpHttpMetricExporter metricExporter(@Value("${management.otlp.metrics.export.url}") String url) {
+    OtlpHttpMetricExporter metricExporter(OtlpMetricsConnectionDetails connectionDetails) {
+        String url = connectionDetails.getUrl();
+        Assert.notNull(url, "'url' must not be null");
         return OtlpHttpMetricExporter.builder().setEndpoint(url).build();
     }
 }

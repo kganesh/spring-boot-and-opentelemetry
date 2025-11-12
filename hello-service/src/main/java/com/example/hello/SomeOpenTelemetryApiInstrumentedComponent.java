@@ -11,6 +11,7 @@ import io.opentelemetry.api.trace.Tracer;
 import io.opentelemetry.api.trace.TracerProvider;
 import io.opentelemetry.context.Scope;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnBooleanProperty;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Component;
  * This component is instrumented using the OpenTelemetry API, not Micrometer.
  */
 @Component
+@ConditionalOnBooleanProperty("hello.open-telemetry-api-usage")
 class SomeOpenTelemetryApiInstrumentedComponent {
 
     private final LongCounter counter;
