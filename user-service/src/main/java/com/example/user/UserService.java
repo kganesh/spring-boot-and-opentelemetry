@@ -2,9 +2,8 @@ package com.example.user;
 
 import java.util.List;
 
+import io.micrometer.observation.annotation.ObservationKeyValue;
 import io.micrometer.observation.annotation.Observed;
-import io.micrometer.tracing.annotation.NewSpan;
-import io.micrometer.tracing.annotation.SpanTag;
 import org.jspecify.annotations.Nullable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -37,9 +36,8 @@ public class UserService {
     }
 
     @Observed(name = "user.find-with-id")
-    @NewSpan
     @Transactional(readOnly = true)
-    public @Nullable User findWithId(@SpanTag("id") long id) {
+    public @Nullable User findWithId(@ObservationKeyValue("id") long id) {
         LOGGER.info("Finding user with id {}", id);
         return this.userRepository.findById(id).orElse(null);
     }

@@ -3,9 +3,8 @@ package com.example.greeting;
 import java.util.Locale;
 import java.util.Map;
 
+import io.micrometer.observation.annotation.ObservationKeyValue;
 import io.micrometer.observation.annotation.Observed;
-import io.micrometer.tracing.annotation.NewSpan;
-import io.micrometer.tracing.annotation.SpanTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -22,8 +21,7 @@ class GreetingService {
     );
 
     @Observed(name = "greeting.get")
-    @NewSpan
-    public String getGreeting(@SpanTag("locale") Locale locale) {
+    public String getGreeting(@ObservationKeyValue("locale") Locale locale) {
         LOGGER.info("Looking up greeting for locale {}", locale);
         String greeting = this.greetings.get(locale);
         if (greeting == null) {

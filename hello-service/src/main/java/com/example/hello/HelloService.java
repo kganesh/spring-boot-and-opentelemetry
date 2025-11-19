@@ -7,9 +7,8 @@ import java.util.concurrent.Future;
 import com.example.hello.greeting.GreetingServiceClient;
 import com.example.hello.user.User;
 import com.example.hello.user.UserServiceClient;
+import io.micrometer.observation.annotation.ObservationKeyValue;
 import io.micrometer.observation.annotation.Observed;
-import io.micrometer.tracing.annotation.NewSpan;
-import io.micrometer.tracing.annotation.SpanTag;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,8 +33,7 @@ class HelloService {
     }
 
     @Observed(name = "say-hello")
-    @NewSpan
-    public String sayHello(@SpanTag("locale") Locale locale, @SpanTag("user.id") long userId) {
+    public String sayHello(@ObservationKeyValue("locale") Locale locale, @ObservationKeyValue("user.id") long userId) {
         LOGGER.info("Saying hello to user {} with locale {}", userId, locale);
         if (this.properties.isAsync()) {
             return sayHelloAsync(locale, userId);
