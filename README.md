@@ -5,27 +5,35 @@ This project demonstrates how to use Spring Boot with OpenTelemetry for distribu
 ## Architecture
 
 ```
-+---------+      +------------------+      +-----------------+      +--------------------+
-|         |----->|                  |----->|                 |----->|                    |
-|  User   |      | greeting-service |      |  hello-service  |      |   user-service     |
-|         |----->|                  |----->|                 |----->|                    |
-+---------+      +------------------+      +-----------------+      +--------------------+
-    |                     |                       |                        |
-    |                     |                       |                        |
-    |                     v                       v                        v
-    |               +------------------------------------------------------+
-    |               |                                                      |
-    +--------------->                    OpenTelemetry Collector           <----------------+
-                    |                                                      |
-                    +------------------------------------------------------+
-                                             |
-                                             |
-                                             v
-                                     +-----------------+
-                                     |                 |
-                                     |     Grafana     |
-                                     |                 |
-                                     +-----------------+
++---------+      +------------------+
+|         |----->|                  |
+|  User   |      |  hello-service   |
+|         |----->|                  |
++---------+      +------------------+
+                      |        ^
+                      |        |
+                      v        |
+        +-----------------+    +--------------------+
+        |                 |    |                    |
+        | greeting-service|    |    user-service    |
+        |                 |    |                    |
+        +-----------------+    +--------------------+
+               |         |            |
+               |         |            |
+               |         v            v
+               |   +--------------------------+
+               |   |                          |
+               +---> OpenTelemetry Collector  <---+
+                   |                          |
+                   +--------------------------+
+                                |
+                                |
+                                v
+                        +-----------------+
+                        |                 |
+                        |     Grafana     |
+                        |                 |
+                        +-----------------+
 ```
 
 ## Getting Started
@@ -67,6 +75,32 @@ You can also build the services from source using the Gradle wrapper.
     ./gradlew :greeting-service:build
     ```
 
+## Troubleshooting
+
+*   **View container logs:**
+
+    ```sh
+    docker-compose logs -f <service-name>
+    ```
+
+    For example, to view the logs for the `greeting-service`:
+
+    ```sh
+    docker-compose logs -f greeting-service
+    ```
+
+*   **Check container status:**
+
+    ```sh
+    docker-compose ps
+    ```
+
+*   **Access a running container:**
+
+    ```sh
+    docker-compose exec <service-name> /bin/sh
+    ```
+
 ## Services
 
 *   **greeting-service:** A simple Spring Boot service that returns a greeting.
@@ -82,4 +116,4 @@ You can also build the services from source using the Gradle wrapper.
 *   Docker
 *   Docker Compose
 *   Gradle
-*   Java 25
+*   Java 23
