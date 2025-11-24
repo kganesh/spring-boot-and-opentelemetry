@@ -2,6 +2,32 @@
 
 This project demonstrates how to use Spring Boot with OpenTelemetry for distributed tracing.
 
+## Architecture
+
+```
++---------+      +------------------+      +-----------------+      +--------------------+
+|         |----->|                  |----->|                 |----->|                    |
+|  User   |      | greeting-service |      |  hello-service  |      |   user-service     |
+|         |----->|                  |----->|                 |----->|                    |
++---------+      +------------------+      +-----------------+      +--------------------+
+    |                     |                       |                        |
+    |                     |                       |                        |
+    |                     v                       v                        v
+    |               +------------------------------------------------------+
+    |               |                                                      |
+    +--------------->                    OpenTelemetry Collector           <----------------+
+                    |                                                      |
+                    +------------------------------------------------------+
+                                             |
+                                             |
+                                             v
+                                     +-----------------+
+                                     |                 |
+                                     |     Grafana     |
+                                     |                 |
+                                     +-----------------+
+```
+
 ## Getting Started
 
 To get started, you will need to have Docker and Docker Compose installed.
@@ -19,6 +45,28 @@ To get started, you will need to have Docker and Docker Compose installed.
     *   **hello-service:** `http://localhost:8081`
     *   **user-service:** `http://localhost:8082`
 
+## Building from Source
+
+You can also build the services from source using the Gradle wrapper.
+
+*   **Build all services:**
+
+    ```sh
+    ./gradlew build
+    ```
+
+*   **Build a specific service:**
+
+    ```sh
+    ./gradlew :<service-name>:build
+    ```
+
+    For example, to build the `greeting-service`:
+
+    ```sh
+    ./gradlew :greeting-service:build
+    ```
+
 ## Services
 
 *   **greeting-service:** A simple Spring Boot service that returns a greeting.
@@ -34,4 +82,4 @@ To get started, you will need to have Docker and Docker Compose installed.
 *   Docker
 *   Docker Compose
 *   Gradle
-*   Java 23
+*   Java 25
