@@ -13,15 +13,24 @@ exporters:
         # path: /output/data.json
         path: /dev/null
         format: json
+        # Prometheus exporter – scraped by Prometheus
+    prometheus:
+        endpoint: "0.0.0.0:8889"
+
+    # Send traces to Jaeger via OTLP gRPC
+    otlp/jaeger:
+        endpoint: jaeger:4317
+        tls:
+            insecure: true
 
 service:
     pipelines:
         traces:
             receivers: [ otlp ]
-            exporters: [ debug, file ]
+            exporters: [ otlp/jaeger, debug, file ]
         metrics:
             receivers: [ otlp ]
-            exporters: [ debug, file ]
+            exporters: [ prometheus, debug, file ]
         logs:
             receivers: [ otlp ]
             exporters: [ debug, file ]
